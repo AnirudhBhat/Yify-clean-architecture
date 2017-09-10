@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">YIFY clean architecture</string>
+
+    <string-array name="options">
+        <item>Seeds</item>
+        <item>Download count</item>
+        <item>Rating</item>
+        <item>Year</item>
+        <item>Like count</item>
+    </string-array>
+</resources>
