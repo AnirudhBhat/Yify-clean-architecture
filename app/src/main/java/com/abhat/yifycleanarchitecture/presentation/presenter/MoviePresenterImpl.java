@@ -15,6 +15,7 @@ import rx.Subscriber;
 public class MoviePresenterImpl implements MoviePresenter {
 
     private MovieListView mMovieListView;
+    //Use cases
     private UseCase mGetMovieListUseCase;
 
     public MoviePresenterImpl(MovieListView movieListView, UseCase getMovieListUseCase) {
