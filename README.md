@@ -1,7 +1,17 @@
-<<<<<<< HEAD
 # YIFY-Clean-Architecture
 This is a sample app which follows Uncle Bob's clean architecture approach 
-=======
-# Yify-clean-architecture
-This sample app follows Uncle Bob's clean architecture approach. Work in progress
->>>>>>> 5d8190a97604704ab3a8b2cec98d9b3c0169211f
+
+gif
+=====
+https://i.imgur.com/sQR3UHm.gif
+
+Screenshots
+===========
+
+![Imgur](https://i.imgur.com/FMTRojO.png)
+![Imgur](https://i.imgur.com/IW0Tr7x.png)
+![Imgur](https://i.imgur.com/R73yadm.png)
+![Imgur](https://i.imgur.com/yVQ2bUJ.png)
+![Imgur](https://i.imgur.com/mixmj5j.png)
+![Imgur](https://i.imgur.com/2zlkHbY.png)
+![Imgur](https://i.imgur.com/ds98m3P.png)
