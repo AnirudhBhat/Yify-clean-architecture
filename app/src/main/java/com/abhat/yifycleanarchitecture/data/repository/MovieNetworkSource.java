@@ -2,6 +2,7 @@ package com.abhat.yifycleanarchitecture.data.repository;
 
 import com.abhat.yifycleanarchitecture.data.model.ApiResponseData;
 import com.abhat.yifycleanarchitecture.data.model.Data;
+import com.abhat.yifycleanarchitecture.data.model.Movie;
 import com.abhat.yifycleanarchitecture.data.service.RestClient;
 
 import rx.Observable;
@@ -16,6 +17,13 @@ public class MovieNetworkSource implements MovieRepository {
     @Override
     public Observable<ApiResponseData> movieList(String sortBy, String searchQuery) {
         return RestClient.getApiServiceForMovies().getMoviesList(sortBy, searchQuery, "50")
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
+    public Observable<ApiResponseData> movieDetails(String id, String withImages, String withCast) {
+        return RestClient.getApiServiceForMovies().getMovieDetails(id, withImages, withCast)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io());
     }

@@ -1,10 +1,10 @@
 package com.abhat.yifycleanarchitecture;
 
 import com.abhat.yifycleanarchitecture.data.model.ApiResponseData;
+import com.abhat.yifycleanarchitecture.data.model.Data;
 import com.abhat.yifycleanarchitecture.data.model.Movie;
-import com.abhat.yifycleanarchitecture.data.repository.MovieRepository;
-import com.abhat.yifycleanarchitecture.domain.UseCase;
-import com.abhat.yifycleanarchitecture.presentation.presenter.MoviePresenterImpl;
+import com.abhat.yifycleanarchitecture.domain.usecases.UseCase;
+import com.abhat.yifycleanarchitecture.presentation.presenter.MovieListPresenterImpl;
 import com.abhat.yifycleanarchitecture.presentation.view.MovieListView;
 
 import junit.framework.Assert;
@@ -33,8 +33,8 @@ public class MoviePresenterImplTest {
 
 
         // when
-        MoviePresenterImpl moviePresenter = new MoviePresenterImpl(view, useCase);
-        moviePresenter.getMovieList("seeds", "", "");
+        MovieListPresenterImpl moviePresenter = new MovieListPresenterImpl(view, useCase);
+        moviePresenter.getMovieList("seeds", "");
 
         // then
         Assert.assertEquals(true, ((MockView)view).passed);
@@ -42,13 +42,14 @@ public class MoviePresenterImplTest {
 
     private class MockView implements MovieListView {
         boolean passed;
+        boolean isProgressShown;
         @Override
-        public void showProgress() {
-
+        public void showLoading() {
+            isProgressShown = true;
         }
 
         @Override
-        public void hideProgress() {
+        public void hideLoading() {
 
         }
 
@@ -65,7 +66,7 @@ public class MoviePresenterImplTest {
 
     public class MockUseCase extends UseCase<ApiResponseData> {
         @Override
-        public Observable<ApiResponseData> buildUseCase(String sortBy, String quality, String rating) {
+        public Observable<ApiResponseData> buildUseCase(String sortBy, String quality) {
             Observable<ApiResponseData> observable = Observable.fromCallable(new Callable<ApiResponseData>() {
                 @Override
                 public ApiResponseData call() throws Exception {
@@ -92,6 +93,11 @@ public class MoviePresenterImplTest {
 
 
             return observable;
+        }
+
+        @Override
+        public Observable<Data> buildUseCase(String id, String sortBy, String quality) {
+            return null;
         }
     }
 }

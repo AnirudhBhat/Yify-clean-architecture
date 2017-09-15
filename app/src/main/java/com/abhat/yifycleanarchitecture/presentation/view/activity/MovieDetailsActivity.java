@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -11,13 +12,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.abhat.yifycleanarchitecture.R;
+import com.abhat.yifycleanarchitecture.data.model.Movie;
+import com.abhat.yifycleanarchitecture.domain.usecases.GetMovieDetailUseCase;
+import com.abhat.yifycleanarchitecture.domain.usecases.GetMovieListUseCase;
+import com.abhat.yifycleanarchitecture.presentation.adapter.MovieDetailBackgroundImageAdapter;
+import com.abhat.yifycleanarchitecture.presentation.presenter.MovieListPresenterImpl;
+import com.abhat.yifycleanarchitecture.presentation.presenter.MoviePresenterImpl;
+import com.abhat.yifycleanarchitecture.presentation.view.MovieDetailView;
 import com.bumptech.glide.Glide;
+
+import java.util.ArrayList;
 
 /**
  * Created by Anirudh Uppunda on 3/9/17.
  */
 
-public class MovieDetailsActivity extends AppCompatActivity {
+public class MovieDetailsActivity extends AppCompatActivity implements MovieDetailView {
 
     private String imdbRating;
     private String backgroundImage;
@@ -30,6 +40,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
     private String quality;
     private String size;
     private String runtime;
+    private String movieId;
+    private ViewPager mViewPager;
 
     private TextView imdbRatingText;
     private TextView summaryText;
@@ -39,13 +51,16 @@ public class MovieDetailsActivity extends AppCompatActivity {
     private TextView runtimeView;
     private Button torrentDownload;
     private String hashUrl;
+    private MoviePresenterImpl mMoviePresenter;
+    private MovieDetailBackgroundImageAdapter adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
+        mViewPager = (ViewPager)findViewById(R.id.background_image);
         coverImageView = (ImageView)findViewById(R.id.cover_image);
-        backgroundImageView = (ImageView)findViewById(R.id.background_image);
+        //backgroundImageView = (ImageView)findViewById(R.id.background_image);
         imdbRatingText = (TextView)findViewById(R.id.imdb_rating);
         summaryText = (TextView)findViewById(R.id.summary);
         sizeView = (TextView)findViewById(R.id.movieSize);
@@ -65,7 +80,10 @@ public class MovieDetailsActivity extends AppCompatActivity {
             size = bundle.getString("size");
             runtime = bundle.getString("runtime");
             quality = bundle.getString("quality");
+            movieId = bundle.getString("movieid");
         }
+        adapter = new MovieDetailBackgroundImageAdapter(this, new ArrayList<String>());
+        mViewPager.setAdapter(adapter);
         summaryText.setText(summary);
         imdbRatingText.setText(imdbRating);
         sizeView.setText("Size: " + size);
@@ -73,6 +91,9 @@ public class MovieDetailsActivity extends AppCompatActivity {
         loadCoverImage();
         loadBackgroundImage();
         constructHash();
+
+        mMoviePresenter = new MoviePresenterImpl(this, new GetMovieDetailUseCase());
+        mMoviePresenter.getMovieDetail(movieId);
 
         torrentDownload.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,20 +112,47 @@ public class MovieDetailsActivity extends AppCompatActivity {
     }
 
     private void loadCoverImage() {
-        Glide.with(this)
-                .load(coverImage)
-                .into(coverImageView);
+        loadImage(coverImage, coverImageView);
     }
 
     private void loadBackgroundImage() {
+        //loadImage(backgroundImage, backgroundImageView);
+    }
+
+    private void loadImage(String load, ImageView into) {
         Glide.with(this)
-                .load(backgroundImage)
-                .into(backgroundImageView);
+                .load(load)
+                .into(into);
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         supportFinishAfterTransition();
+    }
+
+    @Override
+    public void displayMovieDetails(Movie movie) {
+        ArrayList<String> images = new ArrayList<String>();
+        images.add(movie.getLarge_screenshot_image1());
+        images.add(movie.getLarge_screenshot_image2());
+        images.add(movie.getLarge_screenshot_image3());
+        adapter.setBackgroundImages(images);
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void displayError() {
+
     }
 }

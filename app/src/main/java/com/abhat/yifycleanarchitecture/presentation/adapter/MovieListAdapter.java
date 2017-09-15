@@ -77,6 +77,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MyVi
                     i.putExtra("runtime", String.valueOf(movieList.get(position).getRuntime()));
                     i.putExtra("movieName", movieList.get(position).getTitle_long());
                     i.putExtra("quality", movieList.get(position).getTorrents().get(0).getQuality());
+                    i.putExtra("movieid", String.valueOf(movieList.get(position).getId()));
                     ActivityOptionsCompat options = ActivityOptionsCompat.
                             makeSceneTransitionAnimation((MovieListActivity)context, image, "coverImage");
                     context.startActivity(i, options.toBundle());

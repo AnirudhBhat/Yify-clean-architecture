@@ -2,6 +2,7 @@ package com.abhat.yifycleanarchitecture.data.repository;
 
 import com.abhat.yifycleanarchitecture.data.model.ApiResponseData;
 import com.abhat.yifycleanarchitecture.data.model.Data;
+import com.abhat.yifycleanarchitecture.data.model.Movie;
 
 import rx.Observable;
 
@@ -11,4 +12,6 @@ import rx.Observable;
 
 public interface MovieRepository {
     Observable<ApiResponseData> movieList(String sortBy, String searchQuery);
+
+    Observable<ApiResponseData> movieDetails(String id, String withImages, String withCast);
 }

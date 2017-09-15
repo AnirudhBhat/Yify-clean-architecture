@@ -10,13 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.abhat.yifycleanarchitecture.R;
 import com.abhat.yifycleanarchitecture.data.model.Movie;
 import com.abhat.yifycleanarchitecture.domain.usecases.GetMovieListUseCase;
 import com.abhat.yifycleanarchitecture.presentation.adapter.MovieListAdapter;
-import com.abhat.yifycleanarchitecture.presentation.presenter.MoviePresenter;
-import com.abhat.yifycleanarchitecture.presentation.presenter.MoviePresenterImpl;
+import com.abhat.yifycleanarchitecture.presentation.presenter.MovieListPresenter;
+import com.abhat.yifycleanarchitecture.presentation.presenter.MovieListPresenterImpl;
 import com.abhat.yifycleanarchitecture.presentation.view.MovieListView;
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ import java.util.List;
 
 public class MovieListFragment extends Fragment implements MovieListView {
 
-    private MoviePresenter mMoviePresenter;
+    private MovieListPresenter mMoviePresenter;
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
     private ProgressBar mProgressBar;
@@ -65,31 +66,32 @@ public class MovieListFragment extends Fragment implements MovieListView {
         mAdapter = new MovieListAdapter(getActivity(), new ArrayList<Movie>());
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        showProgress();
-        mMoviePresenter = new MoviePresenterImpl(this, new GetMovieListUseCase());
+        showLoading();
+        mMoviePresenter = new MovieListPresenterImpl(this, new GetMovieListUseCase());
         mMoviePresenter.getMovieList(sortBy, searchQuery);
         return view;
     }
 
     @Override
-    public void showProgress() {
+    public void showLoading() {
         mProgressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void hideProgress() {
+    public void hideLoading() {
         mProgressBar.setVisibility(View.GONE);
     }
 
     @Override
     public void displayMovieList(List<Movie> movies) {
-        hideProgress();
+        hideLoading();
         mAdapter.setMovieList(movies);
         mAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void displayError() {
-
+        hideLoading();
+        Toast.makeText(getActivity(), "OOPS, something went wrong!. Please try again later...", Toast.LENGTH_LONG).show();
     }
 }

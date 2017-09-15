@@ -1,47 +1,49 @@
 package com.abhat.yifycleanarchitecture.presentation.presenter;
 
-import android.util.Log;
-
 import com.abhat.yifycleanarchitecture.data.model.ApiResponseData;
+import com.abhat.yifycleanarchitecture.data.model.Data;
+import com.abhat.yifycleanarchitecture.data.model.Movie;
+import com.abhat.yifycleanarchitecture.domain.usecases.GetMovieDetailUseCase;
 import com.abhat.yifycleanarchitecture.domain.usecases.UseCase;
-import com.abhat.yifycleanarchitecture.presentation.view.MovieListView;
+import com.abhat.yifycleanarchitecture.presentation.view.MovieDetailView;
 
 import rx.Subscriber;
 
 /**
- * Created by Anirudh Uppunda on 3/9/17.
+ * Created by Anirudh Uppunda on 15/9/17.
  */
 
 public class MoviePresenterImpl implements MoviePresenter {
 
-    private MovieListView mMovieListView;
-    //Use cases
-    private UseCase mGetMovieListUseCase;
+    private MovieDetailView mMovieDetailView;
+    private GetMovieDetailUseCase mGetMovieDetailUseCase;
 
-    public MoviePresenterImpl(MovieListView movieListView, UseCase getMovieListUseCase) {
-        this.mMovieListView = movieListView;
-        this.mGetMovieListUseCase = getMovieListUseCase;
+    public MoviePresenterImpl(MovieDetailView view, GetMovieDetailUseCase getMovieDetailUseCase) {
+        this.mMovieDetailView = view;
+        this.mGetMovieDetailUseCase = getMovieDetailUseCase;
     }
 
+
     @Override
-    public void getMovieList(String limit, String searchQuery) {
-        mGetMovieListUseCase.execute(limit, searchQuery)
+    public void getMovieDetail(String id) {
+        mGetMovieDetailUseCase.execute(id, "true", "")
                 .subscribe(new Subscriber<ApiResponseData>() {
                     @Override
                     public void onCompleted() {
-                        //Log.d("YIFY", "ON COMPLETE CALLED");
+
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        //Log.d("YIFY", "ON ERROR CALLED");
+                        if (mMovieDetailView != null) {
+                            mMovieDetailView.displayError();
+                        }
                     }
 
                     @Override
                     public void onNext(ApiResponseData data) {
-                        //Log.d("YIFY", "ON NEXT CALLED");
-                        if (mMovieListView != null) {
-                            mMovieListView.displayMovieList(data.getData().getMovies());
+                        if (mMovieDetailView != null) {
+                            mMovieDetailView.displayMovieDetails(data.getData().getMovie());
                         }
                     }
                 });

@@ -9,13 +9,6 @@ import java.util.List;
  * Created by Anirudh Uppunda on 3/9/17.
  */
 
-public interface MovieListView {
-
-    void showProgress();
-
-    void hideProgress();
-
+public interface MovieListView extends BaseView{
     void displayMovieList(List<Movie> movies);
-
-    void displayError();
 }

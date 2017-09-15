@@ -1,10 +1,9 @@
 package com.abhat.yifycleanarchitecture.presentation.presenter;
 
 /**
- * Created by Anirudh Uppunda on 3/9/17.
+ * Created by cumulations on 15/9/17.
  */
 
 public interface MoviePresenter {
-
-    void getMovieList(String limit, String quality);
+    void getMovieDetail(String id);
 }

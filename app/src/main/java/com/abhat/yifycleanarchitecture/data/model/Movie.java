@@ -29,6 +29,62 @@ public class Movie {
     private String small_cover_image;
     private String medium_cover_image;
     private String large_cover_image;
+    private String medium_screenshot_image1;
+    private String medium_screenshot_image2;
+    private String medium_screenshot_image3;
+    private String large_screenshot_image1;
+    private String large_screenshot_image2;
+
+    public String getLarge_screenshot_image1() {
+        return large_screenshot_image1;
+    }
+
+    public void setLarge_screenshot_image1(String large_screenshot_image1) {
+        this.large_screenshot_image1 = large_screenshot_image1;
+    }
+
+    public String getLarge_screenshot_image2() {
+        return large_screenshot_image2;
+    }
+
+    public void setLarge_screenshot_image2(String large_screenshot_image2) {
+        this.large_screenshot_image2 = large_screenshot_image2;
+    }
+
+    public String getLarge_screenshot_image3() {
+        return large_screenshot_image3;
+    }
+
+    public void setLarge_screenshot_image3(String large_screenshot_image3) {
+        this.large_screenshot_image3 = large_screenshot_image3;
+    }
+
+    private String large_screenshot_image3;
+
+    public String getMedium_screenshot_image1() {
+        return medium_screenshot_image1;
+    }
+
+    public void setMedium_screenshot_image1(String medium_screenshot_image1) {
+        this.medium_screenshot_image1 = medium_screenshot_image1;
+    }
+
+    public String getMedium_screenshot_image2() {
+        return medium_screenshot_image2;
+    }
+
+    public void setMedium_screenshot_image2(String medium_screenshot_image2) {
+        this.medium_screenshot_image2 = medium_screenshot_image2;
+    }
+
+    public String getMedium_screenshot_image3() {
+        return medium_screenshot_image3;
+    }
+
+    public void setMedium_screenshot_image3(String medium_screenshot_image3) {
+        this.medium_screenshot_image3 = medium_screenshot_image3;
+    }
+
     private String state;
     private List<Torrents> torrents;
 
