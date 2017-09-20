@@ -70,6 +70,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MyVi
                     i.putExtra("backgroundImage", movieList.get(position).getBackground_image());
                     i.putExtra("coverImage", movieList.get(position).getLarge_cover_image());
                     i.putExtra("summary", movieList.get(position).getSummary());
+                    i.putExtra("trailer", movieList.get(position).getYt_trailer_code());
                     i.putExtra("torrentLink", movieList.get(position).getTorrents().get(0).getUrl());
                     i.putExtra("torrentHash", movieList.get(position).getTorrents().get(0).getHash());
                     i.putExtra("torrentUrl", movieList.get(position).getTorrents().get(0).getUrl());

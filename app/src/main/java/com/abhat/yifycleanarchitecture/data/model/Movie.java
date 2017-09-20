@@ -34,6 +34,15 @@ public class Movie {
     private String medium_screenshot_image3;
     private String large_screenshot_image1;
     private String large_screenshot_image2;
+    private List<Cast> cast;
+
+    public List<Cast> getCast() {
+        return cast;
+    }
+
+    public void setCast(List<Cast> cast) {
+        this.cast = cast;
+    }
 
     public String getLarge_screenshot_image1() {
         return large_screenshot_image1;

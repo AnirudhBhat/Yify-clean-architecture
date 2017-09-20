@@ -6,15 +6,19 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.abhat.yifycleanarchitecture.R;
+import com.abhat.yifycleanarchitecture.data.model.Cast;
 import com.abhat.yifycleanarchitecture.data.model.Movie;
 import com.abhat.yifycleanarchitecture.domain.usecases.GetMovieDetailUseCase;
 import com.abhat.yifycleanarchitecture.domain.usecases.GetMovieListUseCase;
+import com.abhat.yifycleanarchitecture.presentation.adapter.MovieCastAdapter;
 import com.abhat.yifycleanarchitecture.presentation.adapter.MovieDetailBackgroundImageAdapter;
 import com.abhat.yifycleanarchitecture.presentation.presenter.MovieListPresenterImpl;
 import com.abhat.yifycleanarchitecture.presentation.presenter.MoviePresenterImpl;
@@ -41,6 +45,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
     private String size;
     private String runtime;
     private String movieId;
+    private String trailerCode;
     private ViewPager mViewPager;
 
     private TextView imdbRatingText;
@@ -50,15 +55,19 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
     private TextView sizeView;
     private TextView runtimeView;
     private Button torrentDownload;
+    private Button trailer;
     private String hashUrl;
     private MoviePresenterImpl mMoviePresenter;
     private MovieDetailBackgroundImageAdapter adapter;
+    private MovieCastAdapter mMovieCastAdapter;
+    private RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
         mViewPager = (ViewPager)findViewById(R.id.background_image);
+        mRecyclerView = findViewById(R.id.casts_recyclerview);
         coverImageView = (ImageView)findViewById(R.id.cover_image);
         //backgroundImageView = (ImageView)findViewById(R.id.background_image);
         imdbRatingText = (TextView)findViewById(R.id.imdb_rating);
@@ -66,6 +75,15 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         sizeView = (TextView)findViewById(R.id.movieSize);
         runtimeView = (TextView)findViewById(R.id.runtime);
         torrentDownload = (Button)findViewById(R.id.download_torrent);
+        trailer = (Button)findViewById(R.id.movie_trailer);
+        trailer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse("https://www.youtube.com/watch?v=" + trailerCode));
+                startActivity(i);
+            }
+        });
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -73,6 +91,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
             backgroundImage = bundle.getString("backgroundImage");
             coverImage = bundle.getString("coverImage");
             summary = bundle.getString("summary");
+            trailerCode = bundle.getString("trailer");
             torrentLink = bundle.getString("torrentLink");
             torrentHash = bundle.getString("torrentHash");
             torrentUrl = bundle.getString("torrentUrl");
@@ -84,6 +103,10 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         }
         adapter = new MovieDetailBackgroundImageAdapter(this, new ArrayList<String>());
         mViewPager.setAdapter(adapter);
+
+        mMovieCastAdapter = new MovieCastAdapter(this, new ArrayList<Cast>());
+        mRecyclerView.setAdapter(mMovieCastAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true));
         summaryText.setText(summary);
         imdbRatingText.setText(imdbRating);
         sizeView.setText("Size: " + size);
@@ -137,6 +160,12 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         images.add(movie.getLarge_screenshot_image1());
         images.add(movie.getLarge_screenshot_image2());
         images.add(movie.getLarge_screenshot_image3());
+        if (movie.getCast().size() <= 0) {
+            mRecyclerView.setVisibility(View.GONE);
+        } else {
+            mMovieCastAdapter.setmCasts(movie.getCast());
+            mMovieCastAdapter.notifyDataSetChanged();
+        }
         adapter.setBackgroundImages(images);
         adapter.notifyDataSetChanged();
     }

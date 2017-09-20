@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.abhat.yifycleanarchitecture.R;
 import com.bumptech.glide.Glide;
@@ -22,6 +23,7 @@ public class MovieDetailBackgroundImageAdapter extends PagerAdapter {
     private Context mContext;
     private List<String> backgroundImages;
     private ImageView mImageView;
+    private TextView mIndicator;
 
     public MovieDetailBackgroundImageAdapter(Context context, ArrayList<String> backgroundImages) {
         this.mContext = context;
@@ -53,7 +55,9 @@ public class MovieDetailBackgroundImageAdapter extends PagerAdapter {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         ViewGroup layout = (ViewGroup) inflater.inflate(R.layout.background_image_layout, container, false);
         mImageView = (ImageView)layout.findViewById(R.id.image);
+        mIndicator = (TextView)layout.findViewById(R.id.viewpager_indicator);
         container.addView(layout);
+        mIndicator.setText((position + 1) + "/3");
         Glide.with(mContext).load(backgroundImages.get(position)).into(mImageView);
         return layout;
     }
