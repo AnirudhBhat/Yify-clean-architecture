@@ -16,9 +16,9 @@ import rx.Subscriber;
 public class MoviePresenterImpl implements MoviePresenter {
 
     private MovieDetailView mMovieDetailView;
-    private GetMovieDetailUseCase mGetMovieDetailUseCase;
+    private UseCase mGetMovieDetailUseCase;
 
-    public MoviePresenterImpl(MovieDetailView view, GetMovieDetailUseCase getMovieDetailUseCase) {
+    public MoviePresenterImpl(MovieDetailView view, UseCase getMovieDetailUseCase) {
         this.mMovieDetailView = view;
         this.mGetMovieDetailUseCase = getMovieDetailUseCase;
     }

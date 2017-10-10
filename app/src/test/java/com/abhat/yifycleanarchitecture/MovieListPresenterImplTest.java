@@ -1,49 +1,51 @@
 package com.abhat.yifycleanarchitecture;
 
 import com.abhat.yifycleanarchitecture.data.model.ApiResponseData;
+import com.abhat.yifycleanarchitecture.data.model.Data;
 import com.abhat.yifycleanarchitecture.data.model.Movie;
 import com.abhat.yifycleanarchitecture.domain.usecases.UseCase;
-import com.abhat.yifycleanarchitecture.presentation.presenter.MoviePresenter;
-import com.abhat.yifycleanarchitecture.presentation.presenter.MoviePresenterImpl;
-import com.abhat.yifycleanarchitecture.presentation.view.MovieDetailView;
+import com.abhat.yifycleanarchitecture.presentation.presenter.MovieListPresenterImpl;
+import com.abhat.yifycleanarchitecture.presentation.view.MovieListView;
 
 import junit.framework.Assert;
 
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Callable;
 
 import rx.Observable;
 import rx.Subscriber;
 
 /**
- * Created by Anirudh Uppunda on 10/10/17.
+ * Created by Anirudh Uppunda on 5/9/17.
  */
 
-public class MoviePresenterImplTest {
+public class MovieListPresenterImplTest {
     private MockView view;
 
     @Test
-    public void shouldPassMovieDetailToView() {
+    public void shouldPassMovieListToView() {
         // given
         view = new MockView();
         UseCase<ApiResponseData> useCase = new MockUseCase();
 
+
         // when
-        MoviePresenter moviePresenter = new MoviePresenterImpl(view, useCase);
-        moviePresenter.getMovieDetail("");
+        MovieListPresenterImpl moviePresenter = new MovieListPresenterImpl(view, useCase);
+        moviePresenter.getMovieList("seeds", "");
 
         // then
         Assert.assertEquals(true, ((MockView)view).passed);
-
     }
-    private class MockView implements MovieDetailView {
-        boolean passed;
 
+    private class MockView implements MovieListView {
+        boolean passed;
+        boolean isProgressShown;
         @Override
         public void showLoading() {
-
+            isProgressShown = true;
         }
 
         @Override
@@ -52,32 +54,27 @@ public class MoviePresenterImplTest {
         }
 
         @Override
-        public void displayError() {
-
+        public void displayMovieList(List<Movie> movies) {
+            passed = true;
         }
 
         @Override
-        public void displayMovieDetails(Movie movie) {
-            passed = true;
+        public void displayError() {
+
         }
     }
 
     public class MockUseCase extends UseCase<ApiResponseData> {
-
         @Override
         public Observable<ApiResponseData> buildUseCase(String sortBy, String quality) {
-            return null;
-        }
-
-        @Override
-        public Observable<ApiResponseData> buildMovieDetailUseCase(String id, String withImages, String withCast) {
             Observable<ApiResponseData> observable = Observable.fromCallable(new Callable<ApiResponseData>() {
                 @Override
                 public ApiResponseData call() throws Exception {
                     return new ApiResponseData();
                 }
             });
-            observable.subscribe(new Subscriber<ApiResponseData>() {
+
+              observable.subscribe(new Subscriber<ApiResponseData>() {
                 @Override
                 public void onCompleted() {
 
@@ -90,10 +87,17 @@ public class MoviePresenterImplTest {
 
                 @Override
                 public void onNext(ApiResponseData apiResponseData) {
-                    view.displayMovieDetails(new Movie());
+                    view.displayMovieList(new ArrayList<Movie>());
                 }
             });
+
+
             return observable;
+        }
+
+        @Override
+        public Observable<ApiResponseData> buildMovieDetailUseCase(String id, String sortBy, String quality) {
+            return null;
         }
     }
 }
