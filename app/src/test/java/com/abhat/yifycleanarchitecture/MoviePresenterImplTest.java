@@ -65,12 +65,7 @@ public class MoviePresenterImplTest {
     public class MockUseCase extends UseCase<ApiResponseData> {
 
         @Override
-        public Observable<ApiResponseData> buildUseCase(String sortBy, String quality) {
-            return null;
-        }
-
-        @Override
-        public Observable<ApiResponseData> buildMovieDetailUseCase(String id, String withImages, String withCast) {
+        public Observable<ApiResponseData> buildUseCase() {
             Observable<ApiResponseData> observable = Observable.fromCallable(new Callable<ApiResponseData>() {
                 @Override
                 public ApiResponseData call() throws Exception {

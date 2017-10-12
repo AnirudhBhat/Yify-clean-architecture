@@ -24,7 +24,8 @@ public class MovieListPresenterImpl implements MovieListPresenter {
 
     @Override
     public void getMovieList(String limit, String searchQuery) {
-        mGetMovieListUseCase.execute(limit, searchQuery)
+        mGetMovieListUseCase.setMovieListParams(limit, searchQuery);
+        mGetMovieListUseCase.execute()
                 .subscribe(new Subscriber<ApiResponseData>() {
                     @Override
                     public void onCompleted() {

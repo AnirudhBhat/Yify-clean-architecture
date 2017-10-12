@@ -20,12 +20,7 @@ public class GetMovieDetailUseCase extends UseCase<ApiResponseData> {
     }
 
     @Override
-    public Observable<ApiResponseData> buildUseCase(String sortBy, String quality) {
-        return null;
-    }
-
-    @Override
-    public Observable<ApiResponseData> buildMovieDetailUseCase(String id, String withImages, String withCast) {
+    public Observable<ApiResponseData> buildUseCase() {
         return mMovieRepository.movieDetails(id, withImages, withCast);
     }
 }

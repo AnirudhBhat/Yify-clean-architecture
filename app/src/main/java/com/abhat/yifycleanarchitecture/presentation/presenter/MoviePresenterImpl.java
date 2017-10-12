@@ -26,7 +26,8 @@ public class MoviePresenterImpl implements MoviePresenter {
 
     @Override
     public void getMovieDetail(String id) {
-        mGetMovieDetailUseCase.execute(id, "true", "true")
+        mGetMovieDetailUseCase.setMovieDetailParams(id, "true", "true");
+        mGetMovieDetailUseCase.execute()
                 .subscribe(new Subscriber<ApiResponseData>() {
                     @Override
                     public void onCompleted() {

@@ -1,7 +1,6 @@
 package com.abhat.yifycleanarchitecture.domain.usecases;
 
 import com.abhat.yifycleanarchitecture.data.model.ApiResponseData;
-import com.abhat.yifycleanarchitecture.data.model.Data;
 import com.abhat.yifycleanarchitecture.data.repository.MovieNetworkSource;
 import com.abhat.yifycleanarchitecture.data.repository.MovieRepository;
 
@@ -19,13 +18,9 @@ public class GetMovieListUseCase extends UseCase<ApiResponseData> {
         mMovieRepository = new MovieNetworkSource();
     }
 
-    @Override
-    public Observable<ApiResponseData> buildUseCase(String sortBy, String searchQuery) {
-        return mMovieRepository.movieList(sortBy, searchQuery);
-    }
 
     @Override
-    public Observable<ApiResponseData> buildMovieDetailUseCase(String id, String sortBy, String quality) {
-        return null;
+    public Observable<ApiResponseData> buildUseCase() {
+        return mMovieRepository.movieList(limit, searchQuery);
     }
 }
