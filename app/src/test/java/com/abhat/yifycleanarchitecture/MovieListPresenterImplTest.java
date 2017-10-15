@@ -42,15 +42,13 @@ public class MovieListPresenterImplTest {
 
     private class MockView implements MovieListView {
         boolean passed;
-        boolean isProgressShown;
         @Override
         public void showLoading() {
-            isProgressShown = true;
+
         }
 
         @Override
         public void hideLoading() {
-
         }
 
         @Override

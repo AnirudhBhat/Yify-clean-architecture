@@ -1,8 +1,6 @@
 package com.abhat.yifycleanarchitecture.domain.usecases;
 
 import com.abhat.yifycleanarchitecture.data.model.ApiResponseData;
-import com.abhat.yifycleanarchitecture.data.model.Data;
-import com.abhat.yifycleanarchitecture.data.model.Movie;
 import com.abhat.yifycleanarchitecture.data.repository.MovieNetworkSource;
 import com.abhat.yifycleanarchitecture.data.repository.MovieRepository;
 

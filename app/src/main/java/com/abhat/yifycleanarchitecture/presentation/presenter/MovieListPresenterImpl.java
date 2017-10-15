@@ -2,7 +2,6 @@ package com.abhat.yifycleanarchitecture.presentation.presenter;
 
 import com.abhat.yifycleanarchitecture.data.model.ApiResponseData;
 import com.abhat.yifycleanarchitecture.domain.usecases.UseCase;
-import com.abhat.yifycleanarchitecture.presentation.view.BaseView;
 import com.abhat.yifycleanarchitecture.presentation.view.MovieListView;
 
 import rx.Subscriber;
@@ -34,7 +33,6 @@ public class MovieListPresenterImpl implements MovieListPresenter {
 
                     @Override
                     public void onError(Throwable e) {
-                        //Log.d("YIFY", "ON ERROR CALLED");
                         if (mMovieListView != null) {
                             mMovieListView.displayError();
                         }
@@ -42,7 +40,6 @@ public class MovieListPresenterImpl implements MovieListPresenter {
 
                     @Override
                     public void onNext(ApiResponseData data) {
-                        //Log.d("YIFY", "ON NEXT CALLED");
                         if (mMovieListView != null) {
                             mMovieListView.displayMovieList(data.getData().getMovies());
                         }

@@ -1,13 +1,19 @@
 package com.abhat.yifycleanarchitecture.presentation.view.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -24,6 +30,8 @@ import com.abhat.yifycleanarchitecture.presentation.presenter.MovieListPresenter
 import com.abhat.yifycleanarchitecture.presentation.presenter.MoviePresenterImpl;
 import com.abhat.yifycleanarchitecture.presentation.view.MovieDetailView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 
 import java.util.ArrayList;
 
@@ -61,6 +69,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
     private MovieDetailBackgroundImageAdapter adapter;
     private MovieCastAdapter mMovieCastAdapter;
     private RecyclerView mRecyclerView;
+    private CollapsingToolbarLayout mCollapsingToolbarLayout;
+    private Toolbar mToolBar;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,6 +78,8 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         setContentView(R.layout.activity_movie_details);
         mViewPager = (ViewPager)findViewById(R.id.background_image);
         mRecyclerView = findViewById(R.id.casts_recyclerview);
+        mCollapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
+        mToolBar = findViewById(R.id.toolbar);
         coverImageView = (ImageView)findViewById(R.id.cover_image);
         //backgroundImageView = (ImageView)findViewById(R.id.background_image);
         imdbRatingText = (TextView)findViewById(R.id.imdb_rating);
@@ -142,10 +154,23 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
         //loadImage(backgroundImage, backgroundImageView);
     }
 
-    private void loadImage(String load, ImageView into) {
+    private void loadImage(String load, final ImageView into) {
         Glide.with(this)
+                .asBitmap()
                 .load(load)
-                .into(into);
+                .into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(final Bitmap resource, Transition<? super Bitmap> transition) {
+                        into.setImageBitmap(resource);
+                        Palette.from(resource).generate(new Palette.PaletteAsyncListener() {
+                            @Override
+                            public void onGenerated(Palette palette) {
+                                int dominantColor = palette.getDominantColor(getResources().getColor(R.color.colorPrimary));
+                                mCollapsingToolbarLayout.setContentScrimColor(dominantColor);
+                            }
+                        });
+                    }
+                });
     }
 
     @Override

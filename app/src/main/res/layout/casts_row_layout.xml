@@ -9,8 +9,8 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/circle_image"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="@dimen/casts_image_width"
+        android:layout_height="@dimen/casts_image_height"
         android:gravity="center"
         android:padding="8dp"/>
     <TextView
