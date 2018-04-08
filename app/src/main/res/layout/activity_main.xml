@@ -27,7 +27,7 @@
               android:id="@+id/optionsSpinner"
               android:layout_height="wrap_content"
               android:layout_gravity="center"
-              android:theme="@style/spinner"
+
               android:layout_width="wrap_content"/>
       </android.support.v7.widget.Toolbar>
 

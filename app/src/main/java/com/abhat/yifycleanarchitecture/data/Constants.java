@@ -5,5 +5,5 @@ package com.abhat.yifycleanarchitecture.data;
  */
 
 public class Constants {
-    public static String BASE_URL = "https://yts.ag/api/v2/";
+    public static String BASE_URL = "https://yts.am/api/v2/";
 }

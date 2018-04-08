@@ -34,6 +34,7 @@ public class MovieListPresenterImpl implements MovieListPresenter {
                     @Override
                     public void onError(Throwable e) {
                         if (mMovieListView != null) {
+                            e.printStackTrace();
                             mMovieListView.displayError();
                         }
                     }

@@ -5,14 +5,28 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatSpinner;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.SearchView;
 
 import com.abhat.yifycleanarchitecture.R;
 import com.abhat.yifycleanarchitecture.presentation.view.fragment.MovieListFragment;
+
+import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
+import java.util.function.Consumer;
+
+import rx.Observable;
+import rx.Scheduler;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
+import rx.subjects.PublishSubject;
 
 public class MovieListActivity extends AppCompatActivity{
 
@@ -82,7 +96,43 @@ public class MovieListActivity extends AppCompatActivity{
                 MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
 
         searchView.setQueryHint("Search movies...");
-        searchView.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
+        SearchObservable.searchView(searchView)
+                .debounce(600, TimeUnit.MILLISECONDS)
+                .distinctUntilChanged()
+                .switchMap(new Func1<String, Observable<String>>() {
+                    @Override
+                    public Observable<String> call(final String s) {
+                        return Observable.fromCallable(new Callable<String>() {
+                            @Override
+                            public String call() throws Exception {
+                                return s;
+                            }
+                        });
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<String>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d("YIFI", e.getLocalizedMessage());
+                    }
+
+                    @Override
+                    public void onNext(String s) {
+                        searchQuery = s;
+                        sortBy = "";
+                        setupFragment();
+                    }
+                });
+
+
+        /*searchView.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 searchQuery = query;
@@ -95,12 +145,34 @@ public class MovieListActivity extends AppCompatActivity{
             public boolean onQueryTextChange(String newText) {
                 return false;
             }
-        });
+        });*/
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
+    }
+
+    static class SearchObservable {
+        public static Observable<String> searchView(android.support.v7.widget.SearchView searchView) {
+            final PublishSubject<String> subject = PublishSubject.create();
+
+            searchView.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String s) {
+                    subject.onCompleted();
+                    return true;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String text) {
+                    subject.onNext(text);
+                    return true;
+                }
+            });
+
+            return subject;
+        }
     }
 }

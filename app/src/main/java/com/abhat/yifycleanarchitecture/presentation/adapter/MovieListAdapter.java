@@ -71,6 +71,10 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MyVi
                     i.putExtra("coverImage", movieList.get(position).getLarge_cover_image());
                     i.putExtra("summary", movieList.get(position).getSummary());
                     i.putExtra("trailer", movieList.get(position).getYt_trailer_code());
+                    if (movieList.get(position).getTorrents().size() > 1) {
+                        i.putExtra("torrentHash1080p", movieList.get(position).getTorrents().get(1).getHash());
+                        i.putExtra("torrentUrl1080p", movieList.get(position).getTorrents().get(1).getUrl());
+                    }
                     i.putExtra("torrentLink", movieList.get(position).getTorrents().get(0).getUrl());
                     i.putExtra("torrentHash", movieList.get(position).getTorrents().get(0).getHash());
                     i.putExtra("torrentUrl", movieList.get(position).getTorrents().get(0).getUrl());
@@ -80,6 +84,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MyVi
                     i.putExtra("quality", movieList.get(position).getTorrents().get(0).getQuality());
                     i.putExtra("movieid", String.valueOf(movieList.get(position).getId()));
                     ActivityOptionsCompat options = ActivityOptionsCompat.
+                            //makeScaleUpAnimation(image, 0, 0, image.getWidth(), image.getHeight());
                             makeSceneTransitionAnimation((MovieListActivity)context, image, "coverImage");
                     context.startActivity(i, options.toBundle());
                 } catch(Exception e) {
@@ -90,6 +95,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MyVi
 
         Glide.with(context)
                 .load(movieList.get(position).getLarge_cover_image())
+                .thumbnail(0.1f)
                 .into(image);
     }
 

@@ -58,7 +58,7 @@ public class MovieDetailBackgroundImageAdapter extends PagerAdapter {
         mIndicator = (TextView)layout.findViewById(R.id.viewpager_indicator);
         container.addView(layout);
         mIndicator.setText((position + 1) + "/3");
-        Glide.with(mContext).load(backgroundImages.get(position)).into(mImageView);
+        Glide.with(mContext).load(backgroundImages.get(position)).thumbnail(0.1f).into(mImageView);
         return layout;
     }
 }

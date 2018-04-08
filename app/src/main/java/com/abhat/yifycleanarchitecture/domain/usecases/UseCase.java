@@ -11,8 +11,6 @@ import rx.Observable;
 public abstract class UseCase<T> {
 
     public abstract Observable<T> buildUseCase();
-    //public abstract Observable<T> buildUseCase(String sortBy, String quality);
-    //public abstract Observable<T> buildMovieDetailUseCase(String id, String sortBy, String quality);
 
     // Movie details params
     protected String id;
@@ -37,8 +35,4 @@ public abstract class UseCase<T> {
         this.limit = limit;
         this.searchQuery = searchQuery;
     }
-
-    /*public Observable<T> execute(String id, String withImages, String withCast) {
-        return buildMovieDetailUseCase(id, withImages, withCast);
-    }*/
 }

@@ -72,6 +72,8 @@ public class MovieListFragment extends Fragment implements MovieListView {
         return view;
     }
 
+
+
     @Override
     public void showLoading() {
         mProgressBar.setVisibility(View.VISIBLE);
