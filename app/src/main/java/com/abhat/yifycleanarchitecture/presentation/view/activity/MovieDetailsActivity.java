@@ -129,7 +129,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements MovieDeta
 
         mMovieCastAdapter = new MovieCastAdapter(this, new ArrayList<Cast>());
         mRecyclerView.setAdapter(mMovieCastAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true));
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
 
         android.transition.Transition sharedElementEnterTransition = getWindow().getSharedElementEnterTransition();
         sharedElementEnterTransition.addListener(new android.transition.Transition.TransitionListener() {
