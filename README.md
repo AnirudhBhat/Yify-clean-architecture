@@ -3,7 +3,7 @@ This is a sample app which follows Uncle Bob's clean architecture approach
 
 gif
 =====
-https://i.imgur.com/sQR3UHm.gif
+![Imgur](https://i.imgur.com/sQR3UHm.gif)
 
 Screenshots
 ===========
